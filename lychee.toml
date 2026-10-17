@@ -1,0 +1,13 @@
+# Link checker configuration for https://github.com/lycheeverse/lychee
+max_concurrency = 8
+max_retries = 3
+retry_wait_time = 5
+timeout = 30
+accept = ["200..=299", "403", "429"]
+exclude_path = []
+exclude = [
+  # Sites that block automated clients or require JavaScript.
+  "^https://build\\.nvidia\\.com",
+  "^https://forums\\.developer\\.nvidia\\.com",
+  "^https://www\\.reddit\\.com",
+]

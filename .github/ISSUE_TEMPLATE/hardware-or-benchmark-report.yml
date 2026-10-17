@@ -1,0 +1,74 @@
+name: Hardware or benchmark report
+description: Report native Linux compatibility or a reproducible measurement on RTX Spark / N1X (or related GB10) hardware.
+title: "[report] <model> – <what you tested>"
+labels: [report]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Reports are evidence for `docs/linux.md` and `docs/benchmarks.md`. Only describe what you actually ran.
+        Paste command output instead of summaries where possible. Put long logs in a gist and link it.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Report type
+      options:
+        - Linux hardware compatibility
+        - Benchmark / measurement
+        - Correction to an existing entry
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Native Linux on an N1X laptop
+        - Windows on Arm (ARM64) on an N1X laptop
+        - WSL2 on an N1X laptop
+        - GB10 desktop (DGX Spark or OEM equivalent)
+    validations:
+      required: true
+  - type: input
+    id: hardware
+    attributes:
+      label: Device, SKU and RAM
+      placeholder: "ASUS ProArt P14 (model number), 128 GB"
+    validations:
+      required: true
+  - type: input
+    id: firmware
+    attributes:
+      label: BIOS / UEFI / EC firmware version
+    validations:
+      required: true
+  - type: textarea
+    id: software
+    attributes:
+      label: Software revisions
+      description: Distro, `uname -a`, kernel source/branch, page size (`getconf PAGESIZE`), NVIDIA driver or Nouveau/Mesa version, CUDA, and app commit hashes.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: results
+    attributes:
+      label: Results
+      description: |
+        Compatibility: status of boot, display, brightness, suspend, battery drain, thermals, Wi-Fi, Bluetooth, audio, webcam, input, USB4, SSD, visible memory.
+        Benchmarks: model + quantization, context, prompt/output lengths, concurrency, prefill/decode tok/s, latency, peak memory, power, cache state, number of repeated runs. Use the format in docs/benchmarks.md.
+    validations:
+      required: true
+  - type: textarea
+    id: raw
+    attributes:
+      label: Raw output and logs
+      description: Exact commands, raw tool output, `dmesg` excerpts or links to them.
+      render: text
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: I ran these tests myself on the hardware described, or I link the original source.
+          required: true
