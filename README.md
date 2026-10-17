@@ -47,6 +47,8 @@ Known N1X Linux limitations (evidence links are in the compatibility notes):
 - [The Energy Blind Spot](https://arxiv.org/abs/2605.27599) - **GB10** Paper auditing which energy measurements GB10 firmware telemetry can and cannot support.
 - [dgx-spark-fan-control](https://github.com/christopherowen/dgx-spark-fan-control) - **GB10** Kernel driver and CLI that enforce a minimum fan speed on top of the stock EC curve.
 - [gb10-clock-cap](https://github.com/agjs/gb10-clock-cap) - **GB10** Measured GPU clock cap that mitigates hard power-offs under sustained load at a small decode cost.
+- [nv-monitor](https://github.com/wentbackward/nv-monitor) - **GB10** Single-binary NVML terminal monitor and Prometheus exporter with unified-memory and big.LITTLE-aware reporting.
+- [spark-doctor](https://github.com/joeynyc/spark-doctor) - **GB10** Read-only diagnostic CLI that gathers GPU, memory, CUDA-wheel and log signals and names likely causes; some rules are GB10-specific.
 - [dgx-spark-networking](https://github.com/christopherowen/dgx-spark-networking) - **GB10** Switchless ConnectX-7 clustering of two to four systems with a low-latency RDMA all-reduce and patched NCCL.
 
 ## Linux
@@ -93,6 +95,8 @@ Linux kernels and GPU drivers only; CUDA compute kernels belong under Inference.
 - [sparkrun](https://github.com/spark-arena/sparkrun) - **GB10** CLI that launches vLLM, SGLang or llama.cpp recipes across Sparks and feeds the Spark Arena leaderboard, with telemetry on by default.
 - [FlashInfer b12x](https://github.com/flashinfer-ai/flashinfer/tree/main/flashinfer/experimental/b12x) - **GB10** SM120/SM121 CUDA compute kernels for NVFP4/MXFP4/FP8 GEMM, MoE, attention and disk-backed embedding tables, which replace the archived [b12x](https://github.com/local-inference-lab/b12x) *(experimental)*.
 - [SparkLab](https://github.com/sixteen-miles-labs/sparklab) - **GB10** Single-box engine that plans the unified-memory budget and streams MoE experts from NVMe *(beta, self-reported numbers)*.
+- [ds4](https://github.com/antirez/ds4) - **GB10** Local DeepSeek, GLM and Qwen engine with a `cuda-spark` sm_121 build and SSD weight streaming; results are DGX Spark only.
+- [sm121-kernels](https://github.com/blake-snc/sm121-kernels) - **GB10** Rust crate of hand-written PTX CUDA compute kernels for SM121 that needs only the CUDA driver at runtime *(experimental)*.
 
 ## Tests & Benchmarks
 
@@ -102,6 +106,7 @@ Linux kernels and GPU drivers only; CUDA compute kernels belong under Inference.
 - [nvbandwidth](https://github.com/NVIDIA/nvbandwidth) - Copy-engine and kernel-copy bandwidth tests; on unified memory, host-to-device figures are not PCIe numbers.
 - [CUDA Samples](https://github.com/NVIDIA/cuda-samples) - Provides `deviceQuery` and `bandwidthTest` for a quick sanity check of driver, toolkit and architecture.
 - [nccl-tests](https://github.com/NVIDIA/nccl-tests) - **GB10** Collective bandwidth and latency tests for multi-node ConnectX-7 setups.
+- [nvfp4bench](https://github.com/secYOUre/nvfp4bench) - **GB10** NVFP4 tensor-core, GEMM and bandwidth probes for sm_121a; an open issue questions whether its peak kernel reflects real MMA throughput.
 - [fio](https://github.com/axboe/fio) - Flexible I/O tester for NVMe throughput and latency, but keep test files well below internal-SSD capacity on GB10 systems.
 - [Phoronix Test Suite](https://github.com/phoronix-test-suite/phoronix-test-suite) - Automated system benchmarks whose GB10 results are published on OpenBenchmarking.org.
 - [Inside GB10's memory subsystem](https://chipsandcheese.com/p/inside-nvidia-gb10s-memory-subsystem) - **GB10** Chips and Cheese measurements of CPU-side latency, bandwidth and contention with the GPU.
@@ -114,11 +119,13 @@ Documented investigations with their own evidence; findings are the authors' and
 - [moe-offload-findings](https://github.com/GaelicThunder/moe-offload-findings) - **GB10** Measured lessons from streaming a 744B MoE from NVMe, including where speculative decoding hurts.
 - [External GPU over OCuLink](https://github.com/chappa-ai-llc/spark-smi/issues/1) - **GB10** EvilTCell's write-up of attaching an RTX 3090 through the M.2 slot, with link-training failures and cooling results.
 - [Qwen3.8-27B study](https://forums.developer.nvidia.com/t/comprehensive-qwen3-8-27b-study-on-dgx-sparks-quantization-speculative-decoding-and-tp-dp-scaling/381102) - **GB10** Community comparison of BF16, FP8 and NVFP4 with and without MTP across one to four Sparks.
+- [vLLM NVFP4 KV-cache repro](https://github.com/jethac/vllm-nvfp4-kv-consumer-blackwell-repro) - **GB10** Model-free repro of silent KV-cache corruption on sm_120/sm_121 whose upstream fix is still unmerged.
+- [vLLM spin-wait fix](https://github.com/drowzeys/vllm-gb10-spin-wait-fix) - **GB10** Write-up and patch for vLLM's CPU spin-wait heat, including the author's own A/B run that found no gain at TP=1.
 - [cuda-blackwell-carry-bug](https://github.com/Th0rgal/cuda-blackwell-carry-bug) - **GB10** Case study of a carry chain split across inline PTX statements breaking on sm_12x, which PTX does not guarantee and NVIDIA has not confirmed as a compiler bug *(repro needs fixes)*.
 
 ## People & Related Lists
 
-- [awesome-dgx-spark](https://github.com/bidual/awesome-dgx-spark) - **GB10** bidual's broad collection of DGX Spark models, recipes, tools and multi-node guides.
+- [awesome-dgx-spark](https://github.com/bidual/awesome-dgx-spark) - **GB10** bidual's broad collection of DGX Spark models, recipes, tools and multi-node guides; [verified picks and skips](docs/gb10-resources.md) are listed here.
 - [ryanrhughes](https://github.com/ryanrhughes) - Led Omarchy's N1X support and the ProArt P14 bring-up and validation.
 - [spencerbull](https://github.com/spencerbull) - Started Omarchy's N1X work and brought up the Dell XPS 16, including battery and OLED brightness patches.
 - [emirb](https://github.com/emirb) - Moved Omarchy's aarch64 kernel builds to CI and added aarch64 install tests.
