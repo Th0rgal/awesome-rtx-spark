@@ -89,6 +89,7 @@ Linux kernels and GPU drivers only; CUDA compute kernels belong under Inference.
 - [TensorRT-RTX](https://github.com/NVIDIA/TensorRT-RTX) - **WoA / GB10** Inference library whose release notes add Windows on Arm for RTX Spark and Linux SBSA for DGX Spark.
 - [DGX Spark playbooks](https://github.com/NVIDIA/dgx-spark-playbooks) - **GB10** Official playbooks for vLLM, SGLang, TensorRT-LLM, NVFP4 and speculative decoding.
 - [llama.cpp](https://github.com/ggml-org/llama.cpp) - **WoA / WSL2 / GB10** Ships Linux and Windows ARM64 CUDA builds with native FP4 paths for sm_121.
+- [Strata N1X](https://github.com/zackyangzeqi-spec/strata-n1x-Zackyzq) - **WoA** Community Strata adaptation for quantized DeepSeek-V4.1-Flash-1017 inference and local DeepSeek Harness chat on N1X 128GB laptops *(experimental, tested by the maintainer on one device)*.
 - [vLLM](https://github.com/vllm-project/vllm) - **WSL2 / GB10** Serving engine with aarch64 wheels covering sm_121, plus open GB10 issues on NVFP4, FP8 KV cache and speculative decoding.
 - [SGLang](https://github.com/sgl-project/sglang) - **GB10** Serving engine with aarch64 wheels; check its open multi-GPU correctness issues before trusting results.
 - [spark-vllm-docker](https://github.com/eugr/spark-vllm-docker) - **GB10** eugr's tested vLLM images and recipes for one to eight Sparks, mostly NVFP4 with speculative decoding.
