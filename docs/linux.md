@@ -69,11 +69,32 @@ Single tester: spencerbull (Dell), 2026-09-11 to 2026-10-04, on a unit described
 | NVMe performance | ? | No measurements. |
 | Visible memory | Partial | About 61 GiB stock; 119.5 GiB with an earlier reclaim workaround that corrupted memory with a 5K monitor until narrowed. The 4 GiB reservation setting is not separately confirmed on Dell. |
 
+## Microsoft Surface Laptop Ultra
+
+Two testers: teo-casares (from 2026-10, UEFI 7.1.0, Project Mu firmware) and ikegam (from 2026-10). Both run Omarchy aarch64 with out-of-tree modules on top of `linux-omarchy`. Sources: [teo-casares's notes](https://gist.github.com/teo-casares/8b64949638e1952602a7f435bb34d5b8), [omarchy discussion #15885](https://github.com/omacom/omarchy/discussions/15885), [omarchy#15888](https://github.com/omacom/omarchy/pull/15888), [surface-ultra-misc](https://github.com/ikegam/surface-ultra-misc) and [surface-ultra-camera](https://github.com/ikegam/surface-ultra-camera).
+
+| Item | Status | Notes |
+|---|---|---|
+| Boot | Partial | Limine resets the machine before drawing anything ([Limine#694](https://github.com/Limine-Bootloader/Limine/issues/694)); GRUB chainloading the Omarchy UKIs works. Needs `acpi_osi=!`. |
+| Internal panel / GPU | Partial (patched) | The GPU carveout is missing from the EFI memory map and nvidia-drm oopses without an out-of-tree memmap module ([open-gpu-kernel-modules#1458](https://github.com/NVIDIA/open-gpu-kernel-modules/issues/1458)). |
+| GPU clocks | Yes | No 754 MHz floor under sustained load, unlike the P16 and HP ([open-gpu-kernel-modules#1521](https://github.com/NVIDIA/open-gpu-kernel-modules/issues/1521)). |
+| Brightness | Partial | No `/sys/class/backlight`; set through the GPU's eDP luminance from userspace. |
+| GPU compute (CUDA) | Yes | |
+| Battery / AC / fan (SAM) | Yes (patched) | The SAM UART needs its 52 MHz clock and the `MSHW0733` clients, both out of tree ([linux-surface#2307](https://github.com/linux-surface/linux-surface/issues/2307)). |
+| Thermals | Partial | No ACPI trip points; userspace control. |
+| Suspend | Partial | s2idle with `NVreg_EnableS0ixPowerManagement=1`; fails with a dock attached; DRIPS residency ?. |
+| Audio | Partial (patched) | Speakers and internal mics with out-of-tree SoundWire changes; jack detection needs rt721-sdca from 7.4; headset mic ?. |
+| Webcam | Yes (patched) | RGB and IR cameras with an out-of-tree driver. |
+| Keyboard / touchpad | Partial | Delayed key releases; touchpad needs the Win8 multitouch class. |
+| Buttons | Yes | Power button; no volume buttons. `soc_button_array` skips this model since `linux-omarchy-aarch64` 7.3-23 ([omarchy-pkgs#2166](https://github.com/omacom/omarchy-pkgs/pull/2166)). |
+| Wi-Fi / Bluetooth | Yes / ? | |
+| USB4 / Thunderbolt | Partial | Dock with two 4K60 displays; needs a runtime-PM udev rule. |
+| NPU | No | The DLA channel never answers ([n1x-npu-linux#30](https://github.com/johannhartmann/n1x-npu-linux/issues/30)). |
+
 ## Other N1X laptops
 
 | Model | Status |
 |---|---|
-| Microsoft Surface Laptop Ultra | **Unknown.** No native Linux report found. Windows-only measurements exist in [StorageReview's review](https://www.storagereview.com/review/microsoft-surface-laptop-ultra-for-business-review-rtx-spark-n1x). |
 | ASUS ProArt P16, HP OmniBook, Lenovo Yoga 9n / Pro 9n, MSI Prestige | **Unknown.** Announced N1X models with no public Linux evidence. |
 
 ## GB10 desktops (for context)
